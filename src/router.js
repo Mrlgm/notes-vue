@@ -9,8 +9,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: Index
+      component: Index,
+      children: [
+        {
+          path: '',
+          name: 'login',
+          component:()=>import('./components/Login')
+        },
+        {
+          path: '/register',
+          name:'register',
+          component:()=>import('./components/Register')
+        },
+          ],
+
     },
     {
       path: '/home',

@@ -1,16 +1,189 @@
 <template>
-  <div class="home">
-
-  </div>
+    <div class="home">
+        <header class="home-bar">
+            <div class="title-note">
+                <Icon name="note"></Icon>
+                <span class="title">在线便签</span>
+            </div>
+            <div class="avatar">
+                <img src="http://api.wwnight.cn/img/1551537933594.jpeg" alt="">
+                <span>Mrlgm</span>
+            </div>
+        </header>
+        <main class="main">
+            <Note v-for="n in 10" :key="n" class="box"></Note>
+        </main>
+        <div @click="isWrite=!isWrite" class="add-note">
+            <Icon name="add"></Icon>
+        </div>
+        <div v-if="isWrite" class="note-form-wrapper">
+            <div class="note-form">
+                <div class="title">
+                    <h3>添加新标签</h3>
+                    <Icon class="close" @click.native="isWrite=!isWrite" name="close"></Icon>
+                </div>
+                <div class="input"></div>
+                <div class="grade">
+                    <span>重要星级：</span>
+                    <Star :num.sync="grade"></Star>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
+    import '../assets/svg'
+    import Icon from '../components/Icon'
+    import Note from '../components/Note'
+    import Star from '../components/Star'
 
-export default {
-  name: 'home',
-  components: {
-
-  }
-}
+    export default {
+        name: 'home',
+        components: {
+            Icon,
+            Note,
+            Star
+        },
+        data() {
+            return {
+                isWrite: false,
+                grade: 0
+            }
+        }
+    }
 </script>
+
+<style lang="scss" scoped>
+    .home {
+        .home-bar {
+            border-bottom: 1px solid #EDEEEE;
+            height: 70px;
+            padding: 0 100px;
+            display: flex;
+            justify-content: space-between;
+
+            .title-note {
+                font-family: "webfont1", serif;
+                font-size: 40px;
+                display: flex;
+                align-items: center;
+            }
+
+            .avatar {
+                display: flex;
+                align-items: center;
+
+                > img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-right: 20px;
+                }
+
+                > span {
+                    font-family: "webfont2", serif;
+                }
+            }
+        }
+
+        .main {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            column-count: 4;
+            column-gap: 10px;
+
+            .box {
+                margin-top: 10px;
+                break-inside: avoid;
+
+                &:nth-of-type(1) {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        .add-note {
+            position: fixed;
+            right: 200px;
+            bottom: 100px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #00D3AA;
+            font-size: 30px;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+        }
+
+        .note-form-wrapper {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 211, 170, .5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .note-form {
+                padding:10px 15px;
+                border-radius: 4px;
+                width: 500px;
+                background-color: #fff;
+
+                .title {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                    margin-bottom: 10px;
+
+                    .close {
+                        position: absolute;
+                        right: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: #D8D8D8;
+                        font-size: 14px;
+                    }
+                }
+
+                .input {
+                    height: 300px;
+                    background-color: #F5F5F5;
+                    border: 1px solid #ECECEC;
+                    border-radius: 4px;
+                }
+
+                .grade {
+                    display: flex;
+
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+    @font-face {
+        font-family: 'webfont1';
+        src: url('//at.alicdn.com/t/webfont_yk3pn2a2s8i.eot'); /* IE9*/
+        src: url('//at.alicdn.com/t/webfont_yk3pn2a2s8i.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('//at.alicdn.com/t/webfont_yk3pn2a2s8i.woff') format('woff'), /* chrome、firefox */
+        url('//at.alicdn.com/t/webfont_yk3pn2a2s8i.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+        url('//at.alicdn.com/t/webfont_yk3pn2a2s8i.svg#杨任东竹石体-Bold') format('svg'); /* iOS 4.1- */
+    }
+
+    @font-face {
+        font-family: 'webfont2';
+        src: url('//at.alicdn.com/t/webfont_zvrsrk6yyta.eot'); /* IE9*/
+        src: url('//at.alicdn.com/t/webfont_zvrsrk6yyta.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('//at.alicdn.com/t/webfont_zvrsrk6yyta.woff') format('woff'), /* chrome、firefox */
+        url('//at.alicdn.com/t/webfont_zvrsrk6yyta.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+        url('//at.alicdn.com/t/webfont_zvrsrk6yyta.svg#站酷小薇体') format('svg'); /* iOS 4.1- */
+    }
+</style>
