@@ -2,7 +2,7 @@
     <div class="note-wrapper">
         <div class="header">
             <span class="time">2019年03月08日</span>
-            <Icon name="close"></Icon>
+            <Icon class="close" name="close"></Icon>
         </div>
         <div class="content">
             我是哈哈哈哈，还有哈哈哈哈哈哈哈哈，还有哈哈哈哈哈
@@ -72,6 +72,9 @@
             .time {
                 color: #898989;
             }
+            .close{
+                cursor: pointer;
+            }
         }
 
         .content {
@@ -104,6 +107,7 @@
                 align-items: center;
                 font-size: 16px;
                 background-color: #00D3AA;
+                cursor: pointer;
             }
         }
     }

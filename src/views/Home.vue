@@ -22,10 +22,15 @@
                     <h3>添加新标签</h3>
                     <Icon class="close" @click.native="isWrite=!isWrite" name="close"></Icon>
                 </div>
-                <div class="input"></div>
+                <div class="input">
+                    <textarea placeholder="输入内容" class="textarea"></textarea>
+                </div>
                 <div class="grade">
                     <span>重要星级：</span>
                     <Star :num.sync="grade"></Star>
+                </div>
+                <div class="button">
+                    <span class="add">添加</span>
                 </div>
             </div>
         </div>
@@ -33,7 +38,6 @@
 </template>
 
 <script>
-    import '../assets/svg'
     import Icon from '../components/Icon'
     import Note from '../components/Note'
     import Star from '../components/Star'
@@ -118,6 +122,7 @@
             background-color: #00D3AA;
             font-size: 30px;
             box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+            cursor: pointer;
         }
 
         .note-form-wrapper {
@@ -131,7 +136,7 @@
             justify-content: center;
 
             .note-form {
-                padding:10px 15px;
+                padding: 10px 15px;
                 border-radius: 4px;
                 width: 500px;
                 background-color: #fff;
@@ -150,20 +155,48 @@
                         transform: translateY(-50%);
                         color: #D8D8D8;
                         font-size: 14px;
+                        cursor: pointer;
                     }
                 }
 
                 .input {
                     height: 300px;
-                    background-color: #F5F5F5;
-                    border: 1px solid #ECECEC;
-                    border-radius: 4px;
+                    .textarea{
+                        outline:none;
+                        border:1px solid #ECECEC;
+                        background-color: #F5F5F5;
+                        border-radius:4px;
+                        padding: 10px;
+                        font-size:16px;
+                        resize:none;
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
 
                 .grade {
                     display: flex;
-
+                    margin: 20px 0;
                     align-items: center;
+                }
+
+                .button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 10px;
+                    cursor: pointer;
+                    .add {
+                        color: #fff;
+                        padding: 10px 20px;
+                        height: 30px;
+                        width: 100px;
+                        display: flex;
+                        border-radius: 15px;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: #00D3AA;
+                    }
                 }
             }
         }
