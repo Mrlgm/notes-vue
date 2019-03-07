@@ -6,8 +6,8 @@
                 <span class="title">在线便签</span>
             </div>
             <div class="avatar">
-                <img src="http://api.wwnight.cn/img/1551537933594.jpeg" alt="">
-                <span>Mrlgm</span>
+                <img :src="user !== null && user.avatar" :alt="user !== null && user.username">
+                <span>{{user !== null && user.username}}</span>
             </div>
         </header>
         <main class="main">
@@ -44,6 +44,8 @@
     import Icon from '../components/Icon'
     import Note from '../components/Note'
     import Star from '../components/Star'
+    import {mapGetters, mapActions} from 'vuex'
+    import Notes from '../api/notes'
 
     export default {
         name: 'home',
@@ -57,6 +59,16 @@
                 isWrite: false,
                 grade: 0
             }
+        },
+        computed: {
+            ...mapGetters(['user', 'isLogin'])
+        },
+        methods: {
+            ...mapActions(['checkLogin'])
+        },
+        created() {
+            this.checkLogin()
+
         }
     }
 </script>
@@ -128,7 +140,7 @@
             cursor: pointer;
         }
 
-        .logout{
+        .logout {
             position: fixed;
             right: 200px;
             bottom: 20px;
@@ -180,14 +192,15 @@
 
                 .input {
                     height: 300px;
-                    .textarea{
-                        outline:none;
-                        border:1px solid #ECECEC;
+
+                    .textarea {
+                        outline: none;
+                        border: 1px solid #ECECEC;
                         background-color: #F5F5F5;
-                        border-radius:4px;
+                        border-radius: 4px;
                         padding: 10px;
-                        font-size:16px;
-                        resize:none;
+                        font-size: 16px;
+                        resize: none;
                         width: 100%;
                         height: 100%;
                     }
@@ -205,6 +218,7 @@
                     align-items: center;
                     margin-bottom: 10px;
                     cursor: pointer;
+
                     .add {
                         color: #fff;
                         padding: 10px 20px;

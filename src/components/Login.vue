@@ -2,25 +2,43 @@
     <div class="login">
         <div class="login-input">
             <span>账号：</span>
-            <vi-input placeholder="请输入用户名"></vi-input>
+            <vi-input v-model="username" placeholder="请输入用户名"></vi-input>
         </div>
         <div class="login-input">
             <span>密码：</span>
-            <vi-input placeholder="请输入密码"></vi-input>
+            <vi-input v-model="password" placeholder="请输入密码"></vi-input>
         </div>
         <div class="login-button">
             <router-link to="/register">还没注册吧，赶紧注册一个</router-link>
-            <vi-button>登录</vi-button>
+            <vi-button @click="onClick">登录</vi-button>
         </div>
     </div>
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
+
     export default {
         name: "Login",
-        data(){
-            return{
-
+        data() {
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            ...mapActions(['login']),
+            onClick() {
+                if (this.username === '') {
+                    return this.$toast('请输入账号', {position: 'middle'})
+                }
+                if (this.password === '') {
+                    return this.$toast('请输入密码', {position: 'middle'})
+                }
+                this.login({username: this.username, password: this.password})
+                    .then(() => {
+                        this.$router.push({path: '/home'})
+                    })
             }
         }
     }

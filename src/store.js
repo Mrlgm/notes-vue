@@ -11,12 +11,8 @@ export default new Vuex.Store({
         isLogin: false
     },
     getters: {
-        setUser(state, payload) {
-            state.user = payload.user
-        },
-        setLogin(state, payload) {
-            state.isLogin = payload.isLogin
-        }
+        user: state => state.user,
+        isLogin: state => state.isLogin
     },
     mutations: {
         setUser(state, payload) {
