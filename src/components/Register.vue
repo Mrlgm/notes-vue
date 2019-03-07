@@ -2,11 +2,11 @@
     <div class="register">
         <div class="register-input">
             <span>账号：</span>
-            <vi-input placeholder="请输入用户名"></vi-input>
+            <vi-input v-model="username" placeholder="请输入用户名"></vi-input>
         </div>
         <div class="register-input">
             <span>密码：</span>
-            <vi-input placeholder="请输入密码"></vi-input>
+            <vi-input v-model="password" placeholder="请输入密码"></vi-input>
         </div>
         <div class="register-input">
             <span>
@@ -17,26 +17,38 @@
                     上传头像
                 </vi-button>
             </span>
-            <vi-input v-model="avatar" readonly></vi-input>
+            <img :src="avatar" alt="">
         </div>
         <div class="register-button">
             <router-link to="/">有账号了吗？赶紧登录吧</router-link>
-            <vi-button>注册</vi-button>
+            <vi-button @click="onClick">注册</vi-button>
         </div>
     </div>
 </template>
 
 <script>
     import auth from '../api/auth'
+    import {mapActions} from 'vuex'
 
     export default {
         name: "Register",
         data() {
             return {
+                username: '',
+                password: '',
                 avatar: 'http://api.wwnight.cn/img/1551924112601.jpeg'
             }
         },
+        computed: {
+            formatUsername() {
+                return this.username.replace(/^\s* | \s*$/g, '')
+            },
+            formatPassword() {
+                return this.password.replace(/^\s* | \s*$/g, '')
+            }
+        },
         methods: {
+            ...mapActions(["register"]),
             selectImg(e) {
                 let file = e.target.files[0];
                 let param = new FormData(); //创建form对象
@@ -47,6 +59,21 @@
             },
             update() {
                 this.$refs.inputImg.click()
+            },
+            onClick() {
+                if (this.formatUsername === '') {
+                    return this.$toast('请输入正常的账号', {position: 'middle'})
+                }
+                if (this.formatPassword === '' || this.formatPassword.length < 6) {
+                    return this.$toast('请输入最少六位数的密码', {position: 'middle'})
+                }
+                this.register({username: this.username, password: this.password, avatar: this.avatar})
+                    .then((e) => {
+                        this.$toast('注册成功，请登录')
+                        this.$router.push({path: '/'})
+                    }, (e) => {
+                        this.$toast(e.msg)
+                    })
             }
         }
     }
@@ -66,6 +93,13 @@
                 margin-right: 10px;
                 display: flex;
                 justify-content: center;
+            }
+
+            > img {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.75);
             }
 
             margin-bottom: 10px;

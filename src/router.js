@@ -37,19 +37,19 @@ const router = new Router({
     ]
 })
 
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some(record => record.meta.requiresLogin)) {
-//         store.dispatch('checkLogin').then((isLogin) => {
-//             console.log(isLogin)
-//             if (!isLogin) {
-//                 next('/')
-//             } else {
-//                 next()
-//             }
-//         })
-//     } else {
-//         next() // 确保一定要调用 next()
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresLogin)) {
+        store.dispatch('checkLogin').then((isLogin) => {
+            console.log(isLogin)
+            if (!isLogin) {
+                next('/')
+            } else {
+                next()
+            }
+        })
+    } else {
+        next() // 确保一定要调用 next()
+    }
+})
 
 export default router

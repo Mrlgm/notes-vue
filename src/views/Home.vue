@@ -16,7 +16,7 @@
         <div @click="isWrite=!isWrite" class="add-note">
             <Icon name="add"></Icon>
         </div>
-        <div class="logout">
+        <div @click="quit" class="logout">
             <Icon name="logout"></Icon>
         </div>
         <div v-if="isWrite" class="note-form-wrapper">
@@ -57,18 +57,25 @@
         data() {
             return {
                 isWrite: false,
-                grade: 0
+                grade: 0,
+                noteList: []
             }
         },
         computed: {
             ...mapGetters(['user', 'isLogin'])
         },
         methods: {
-            ...mapActions(['checkLogin'])
+            ...mapActions(['checkLogin', 'logout']),
+            quit() {
+                this.logout()
+                this.$router.push({path: '/'})
+            }
         },
         created() {
             this.checkLogin()
-
+            Notes.getNotes().then((e) => {
+                console.log(e)
+            })
         }
     }
 </script>

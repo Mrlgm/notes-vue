@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Vue from 'vue'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.baseURL = 'http://api.wwnight.cn';
@@ -17,14 +16,13 @@ export default function request(url, type = 'GET', data = {}) {
             option.data = data
         }
         axios(option).then((res) => {
-            if (res.data.status === 'ok') {
+            if (res.data.status === 'ok' || res.data instanceof Array) {
                 resolve(res.data)
             } else {
-                Vue.$toast(res.data.msg, {autoClose: false})
                 reject(res.data)
             }
         }).catch((err) => {
-            Vue.$toast('网络异常', {autoClose: false})
+            console.log(err)
             reject({msg: '网络异常'})
         })
     })

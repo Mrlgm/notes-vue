@@ -26,18 +26,28 @@
                 password: ''
             }
         },
+        computed: {
+            formatUsername() {
+                return this.username.replace(/^\s* | \s*$/g, '')
+            },
+            formatPassword() {
+                return this.password.replace(/^\s* | \s*$/g, '')
+            }
+        },
         methods: {
             ...mapActions(['login']),
             onClick() {
-                if (this.username === '') {
+                if (this.formatUsername === '') {
                     return this.$toast('请输入账号', {position: 'middle'})
                 }
-                if (this.password === '') {
+                if (this.formatPassword === '') {
                     return this.$toast('请输入密码', {position: 'middle'})
                 }
-                this.login({username: this.username, password: this.password})
-                    .then(() => {
+                this.login({username: this.formatUsername, password: this.formatPassword})
+                    .then((e) => {
                         this.$router.push({path: '/home'})
+                    }, (e) => {
+                        this.$toast(e.msg)
                     })
             }
         }
