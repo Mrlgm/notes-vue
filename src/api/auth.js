@@ -1,4 +1,5 @@
 import request from '../helpers/request'
+import axios from 'axios'
 
 const URL = {
     REGISTER: '/auth/register',
@@ -22,5 +23,12 @@ export default {
 
     getInfo() {
         return request(URL.GET_INFO)
+    },
+
+    postAvatar({param}){
+        let config = {
+            headers:{'Content-Type':'multipart/form-data'}
+        };  //添加请求头
+        return axios.post('http://api.wwnight.cn/',param,config)
     }
 }

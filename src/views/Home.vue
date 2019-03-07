@@ -16,6 +16,9 @@
         <div @click="isWrite=!isWrite" class="add-note">
             <Icon name="add"></Icon>
         </div>
+        <div class="logout">
+            <Icon name="logout"></Icon>
+        </div>
         <div v-if="isWrite" class="note-form-wrapper">
             <div class="note-form">
                 <div class="title">
@@ -120,6 +123,22 @@
             justify-content: center;
             align-items: center;
             background-color: #00D3AA;
+            font-size: 30px;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
+            cursor: pointer;
+        }
+
+        .logout{
+            position: fixed;
+            right: 200px;
+            bottom: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
             font-size: 30px;
             box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);
             cursor: pointer;
