@@ -11,6 +11,15 @@ Vue.use(VoirUI)
 
 Vue.config.productionTip = false
 
+Vue.filter('formatTime', (time) => {
+  //2019/1/12 17:53
+  let date = new Date(time)
+  let day = date.getDate()
+  let month = date.getMonth() + 1
+  let year = date.getFullYear()
+  return `${year}年${month}月${day}日`
+})
+
 new Vue({
   router,
   store,

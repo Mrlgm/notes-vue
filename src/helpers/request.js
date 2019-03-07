@@ -16,7 +16,7 @@ export default function request(url, type = 'GET', data = {}) {
             option.data = data
         }
         axios(option).then((res) => {
-            if (res.data.status === 'ok' || res.data instanceof Array) {
+            if (res.data.status === 'ok' || res.data instanceof Array || res.data.status === 0) {
                 resolve(res.data)
             } else {
                 reject(res.data)

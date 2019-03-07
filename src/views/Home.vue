@@ -11,7 +11,13 @@
             </div>
         </header>
         <main class="main">
-            <Note v-for="n in 10" :key="n" class="box"></Note>
+            <Note v-for="(item, index) in noteList"
+                  :complete="item.complete"
+                  :content="item.content"
+                  :grade="item.grade"
+                  :note-id="item._id"
+                  :time="item.createAt"
+                  :key="index" class="box"></Note>
         </main>
         <div @click="isWrite=!isWrite" class="add-note">
             <Icon name="add"></Icon>
@@ -26,13 +32,13 @@
                     <Icon class="close" @click.native="isWrite=!isWrite" name="close"></Icon>
                 </div>
                 <div class="input">
-                    <textarea placeholder="输入内容" class="textarea"></textarea>
+                    <textarea v-model="content" placeholder="输入内容" class="textarea"></textarea>
                 </div>
                 <div class="grade">
                     <span>重要星级：</span>
                     <Star :num.sync="grade"></Star>
                 </div>
-                <div class="button">
+                <div @click="addNote" class="button">
                     <span class="add">添加</span>
                 </div>
             </div>
@@ -46,6 +52,7 @@
     import Star from '../components/Star'
     import {mapGetters, mapActions} from 'vuex'
     import Notes from '../api/notes'
+    import Bus from '../helpers/bus'
 
     export default {
         name: 'home',
@@ -58,7 +65,8 @@
             return {
                 isWrite: false,
                 grade: 0,
-                noteList: []
+                content: '',
+                noteList: [],
             }
         },
         computed: {
@@ -69,12 +77,29 @@
             quit() {
                 this.logout()
                 this.$router.push({path: '/'})
+            },
+            addNote() {
+                Notes.addNotes({content: this.content, grade: this.grade})
+                    .then((e) => {
+                        this.noteList.push(e.data)
+                        this.initData()
+                    })
+            },
+            initData() {
+                this.isWrite = false
+                this.grade = 0
+                this.content = ''
             }
         },
         created() {
             this.checkLogin()
             Notes.getNotes().then((e) => {
-                console.log(e)
+                this.noteList = e
+            })
+            Bus.$on('delete:note', (e) => {
+                this.noteList = this.noteList.filter((item) => {
+                    return item._id !== e
+                })
             })
         }
     }

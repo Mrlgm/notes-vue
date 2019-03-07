@@ -1,20 +1,20 @@
 <template>
     <div class="note-wrapper">
         <div class="header">
-            <span class="time">2019年03月08日</span>
-            <Icon class="close" name="close"></Icon>
+            <span class="time">{{time | formatTime}}</span>
+            <Icon @click.native="deleteThisNote" class="close" name="close"></Icon>
         </div>
         <div class="content">
-            我是哈哈哈哈，还有哈哈哈哈哈哈哈哈，还有哈哈哈哈哈
+            {{content}}
         </div>
         <div class="grade">
             <Star :num="grade"></Star>
         </div>
         <div class="complete">
-            <div v-if="complete" class="finish">
+            <div v-if="roundOff" class="finish">
                 已完成
             </div>
-            <div v-if="!complete" class="yes">
+            <div @click="completeNote" v-if="!roundOff" class="yes">
                 <img style="height: 16px;width: 16px;" src="../assets/yes.png" alt="yes">
             </div>
         </div>
@@ -24,6 +24,8 @@
 <script>
     import Icon from './Icon'
     import Star from './Star'
+    import Notes from '../api/notes'
+    import Bus from '../helpers/bus'
 
     export default {
         name: "note",
@@ -42,11 +44,39 @@
             },
             content: {
                 type: String
+            },
+            time: {
+                type: String
+            },
+            noteId: {
+                type: String
+            }
+        },
+        data() {
+            return {
+                finish: false
+            }
+        },
+        computed:{
+            roundOff(){
+                return this.complete || this.finish
             }
         },
         methods: {
             onClick(e) {
                 console.log(e)
+            },
+            deleteThisNote() {
+                Notes.deleteNote({noteId: this.noteId}).then((e) => {
+                    this.$toast(e.msg)
+                    Bus.$emit('delete:note', this.noteId)
+                })
+            },
+            completeNote() {
+                Notes.updateNotes({noteId: this.noteId, content: this.content, complete: true, grade: this.grade})
+                    .then((e) => {
+                        this.finish = true
+                    })
             }
         }
     }
@@ -72,7 +102,8 @@
             .time {
                 color: #898989;
             }
-            .close{
+
+            .close {
                 cursor: pointer;
             }
         }
